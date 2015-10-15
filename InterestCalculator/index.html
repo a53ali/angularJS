@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html><head>
+  <title>Loan Calculator</title>
+  
+      <script type="text/javascript" src="./js/angular.js"></script>
+      <script type="text/javascript" src="./js/ui-bootstrap-tpls.js"></script>
+      <link rel="stylesheet" type="text/css" href="./css/bootstrap.css">
+    
+  
+  <style type="text/css">
+    </style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  </style>
+  
+</head>
+<body>
+  <div ng-app="myApp" ng-controller="myCtrl" class="container ng-scope">
+    
+    <h1>Loan Calculator</h1>
+    <div class="well">
+        <div class="form-group has-warning">
+            <label>Desired Monthly Payment</label>
+            <input type="text" class="form-control ng-pristine ng-untouched ng-valid" placeholder="Enter Desired Monthly Payment" ng-model="P">
+            
+        </div>
+        <div class="form-group has-warning">
+            <label>Final Sale Price</label>
+            <input type="text" class="form-control ng-pristine ng-untouched ng-valid" placeholder="Enter Final Sale Price" ng-model="SP">
+            
+        </div>
+        <div class="form-group has-warning">
+            <label>APR Interest Rate</label>
+            <input type="text" class="form-control ng-pristine ng-untouched ng-valid" placeholder="Enter Rate" ng-model="r">
+            
+        </div>
+        <div class="form-group has-warning">
+            <label>Term (in Months)</label>
+            <input type="text" class="form-control ng-pristine ng-untouched ng-valid" placeholder="Term in months" ng-model="n">
+        </div>
+    </div>
+    <div class="well">
+        <div class="form-group has-success">
+            <label>Required Loan Amount</label>
+            <span type="text" class="form-control ng-binding">
+                {{PV() | currency:'$':2}}
+            </span>
+        </div>
+        <div class="form-group has-success">
+            <label>Required Down Payment</label>
+            <span type="text" class="form-control ng-binding">
+                {{DP() | currency:'$':2}}
+            </span>
+        </div>
+        <div class="form-group has-success">
+            <label>Interest over Life of Loan</label>
+            <span type="text" class="form-control ng-binding">
+                {{Interest() | currency:'$':2}}
+            </span>
+        </div>
+    </div>
+    
+</div>
+  
+
+
+
+<script type="text/javascript">//<![CDATA[
+
+var app = angular.module('myApp', ['ui.bootstrap']);
+
+app.controller('myCtrl', function ($scope) {
+    $scope.P = 250;
+    $scope.SP = 16000;
+    $scope.r = 0.019;
+    $scope.n = 48;
+    
+    $scope.PV = function() {
+        var rn = $scope.r / 12;
+        var PV = ($scope.P * (1 - Math.pow(1 + rn,-$scope.n))) / rn;
+        return PV;
+    }
+    
+    $scope.DP = function() {
+        var DP = $scope.SP - $scope.PV();
+        return DP;
+    }
+    
+    $scope.Interest = function() {
+        var interest = $scope.P * $scope.n - $scope.PV();
+        return interest;
+    }
+    
+});
+
+//]]> 
+
+</script>
+
+
+
+
+
+</body></html>
